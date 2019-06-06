@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %} Posts{% endblock title %}
+
+{% block content %}
+    <h2> If you want, you can create your own Post!  <a href="{% url 'new_post' %}">+New Post</a></h2>
+    {% for post in object_list %}
+        <div class="post">
+            <div class="post_title">
+                <a href="{% url 'post_detail' post.id %}">{{post.title}} </a>
+            </div>
+        <div class="content">
+            {{  post.short_notation }}
+        </div>
+        <div class="author_&_date">
+            <p> {{ post.date }} | {{post.author}}</p>
+        </div>
+        </div>
+        <p><a href="{% url 'update_post' post.pk %}">Edit</a> | <a href="{% url 'delete_post' post.pk %}">Delete</a></p>
+    {% endfor %}
+    <center>
+    {% if is_paginated %}
+        <p>
+
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+            {% endif %}
+            {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                    <span>{{ i }} <span class="sr-only"></span></span>
+                {% else %}
+                    <a href="?page={{ i }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+
+
+            {% endif %}
+
+        </p>
+{% endif %}
+</center>
+{% endblock content %}
